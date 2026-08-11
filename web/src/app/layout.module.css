@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  padding: 1.25rem 2rem;
+}
+
+.welcome {
+  font-family: var(--font-body), sans-serif;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.headerLink {
+  font-family: var(--font-body), sans-serif;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.headerLink:hover { background: var(--accent-soft); }
+.headerLink:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .headerLink { transition: none; }
+}
