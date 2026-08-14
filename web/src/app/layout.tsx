@@ -12,11 +12,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}>
       <body className="min-h-screen">
-        <header className="flex items-center justify-end gap-5 px-8 py-5">
+        <header className="flex items-center justify-between gap-5 px-8 py-5">
+          <a href="/" className="font-display text-lg text-foreground">
+            Task Reminder
+          </a>
+          <div className="flex items-center gap-5">
           {session ? (
             <>
               <span className="font-sans text-sm text-muted">Welcome, {session.user.name}</span>
-              
+              <a href="/settings"
+                className="rounded-md border border-accent px-3.5 py-1.5 text-sm font-semibold text-accent transition-colors hover:bg-accent-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
+              >
+                Settings
+              </a>
                 <a href="/auth/logout"
                 className="rounded-md border border-accent px-3.5 py-1.5 text-sm font-semibold text-accent transition-colors hover:bg-accent-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
               >
@@ -31,6 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               Log In
             </a>
           )}
+          </div>
         </header>
         <main>{children}</main>
       </body>
