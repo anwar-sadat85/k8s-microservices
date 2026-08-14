@@ -39,6 +39,8 @@ spec:
               name: user-db-data
               subPath: postgres   # avoids the "lost+found" directory issue
                                     # some CSI drivers leave in the volume root
+            - mountPath: /docker-entrypoint-initdb.d
+              name: user-db-init
           readinessProbe:
             exec:
               command: ["pg_isready", "-U", "appuser"]
@@ -48,6 +50,10 @@ spec:
               command: ["pg_isready", "-U", "appuser"]
             initialDelaySeconds: 30
             periodSeconds: 10
+      volumes:
+        - name: user-db-init
+          configMap:
+            name: user-db-init
   volumeClaimTemplates:
     - metadata:
         name: user-db-data
