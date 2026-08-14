@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-db-init
+  namespace: dev
+data:
+  # Baseline schema for a brand-new user-db volume — mirrors what
+  # InitUsers1786595434632 + AddRemindersOptIn1786671063196 produce together.
+  # Postgres only runs files in /docker-entrypoint-initdb.d/ when it
+  # initializes a completely empty data directory, so this never touches
+  # an existing volume — it only matters for fresh clusters. The
+  # "migrations" table is seeded to match, so TypeORM's CLI (used for any
+  # future schema change via `npm run migration:generate`/`migration:run`)
+  # correctly treats both as already applied instead of re-running them.
+  001-init-schema.sql: |
+    CREATE TABLE "users" (
+        "sub" character varying NOT NULL,
+        "email" character varying NOT NULL,
+        "firstName" character varying,
+        "lastName" character varying,
+        "preferredTime" character varying,
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "remindersOptIn" boolean NOT NULL DEFAULT false,
+        CONSTRAINT "PK_2ca016813ffcce3392b3eb8ed0c" PRIMARY KEY ("sub")
+    );
+
+    CREATE TABLE "migrations" (
+        "id" SERIAL NOT NULL,
+        "timestamp" bigint NOT NULL,
+        "name" character varying NOT NULL,
+        CONSTRAINT "PK_8c82d7f526340ab734260ea46be" PRIMARY KEY ("id")
+    );
+
+    INSERT INTO "migrations" ("timestamp", "name") VALUES
+        (1786595434632, 'InitUsers1786595434632'),
+        (1786671063196, 'AddRemindersOptIn1786671063196');
